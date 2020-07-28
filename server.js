@@ -23,32 +23,43 @@ async function sendSMS(message) {
             key: textbeltKey,
         });
     } catch (error) {
-        
+
     }
 }
 
 
 async function getWeatherData() {
     try {
-        const { data } = await axios.get(OPEN_WEATHER_BASE_URL + weatherAPIkey);
-        const [ weather ] = data.weather;
-        return {temp: Math.round(data.main.temp), weather};
+        const {
+            data
+        } = await axios.get(OPEN_WEATHER_BASE_URL + weatherAPIkey);
+        const [weather] = data.weather;
+        return {
+            temp: Math.round(data.main.temp),
+            weather
+        };
     } catch (error) {
-        
+
     }
 }
 
 
-
-
 async function genMessage() {
-    const { temp, weather } = await getWeatherData();
+    const {
+        temp,
+        weather
+    } = await getWeatherData();
     const message = `Good Morning, ${customer}, the current temp right now is ${temp}. Right now the current weather condition suggests ${weather.description}.`;
     return message;
 }
 
+const scheduleObj = {
+    hour: 5,
+    minute: 0,
+    dayOfWeek: [0, 1, 2, 3, 4, 5, 6]
+};
 
-schedule.scheduleJob({hour: 5, minute: 0, dayOfWeek: [0, 1, 2, 3, 4, 5, 6]}, function() {
+schedule.scheduleJob(scheduleObj, function () {
     const message = genMessage();
     message.then(data => sendSMS(data));
 });
