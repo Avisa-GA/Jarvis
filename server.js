@@ -47,8 +47,10 @@ async function genMessage() {
     return message;
 }
 
+// const scheduleObj = {hour: 5, minute: 0, dayOfWeek: [0, 1, 2, 3, 4, 5, 6]};
+const scheduleObj = {hour: 16, minute: 17, dayOfWeek: 2};
 
-schedule.scheduleJob({hour: 5, minute: 0, dayOfWeek: [0, 1, 2, 3, 4, 5, 6]}, function() {
+schedule.scheduleJob(scheduleObj, function() {
     const message = genMessage();
     message.then(data => sendSMS(data));
 });
