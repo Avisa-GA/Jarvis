@@ -49,7 +49,7 @@ async function genMessage() {
         temp,
         weather
     } = await getWeatherData();
-    const message = `Good Morning, ${customer}, the current temp right now is ${temp}. Right now the current weather condition suggests ${weather.description}.`;
+    const message = `Good Morning, ${customer}, the current temperature is ${temp} degrees Fahrenheit. As of ${new Date().toLocaleTimeString()}, the current weather condition suggests ${weather.description}.`;
     return message;
 }
 
