@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const schedule = require('node-schedule');
+const getQOD = require('./utils/qod-api');
+
 
 require('dotenv').config();
+
 
 const weatherAPIkey = process.env.OPEN_WEATHER_API_KEY;
 const textbeltKey = process.env.TEXTBELT_KEY;
@@ -49,7 +52,12 @@ async function genMessage() {
         temp,
         weather
     } = await getWeatherData();
-    const message = `Good Morning, ${customer}, the current temp right now is ${temp}. Right now the current weather condition suggests ${weather.description}.`;
+
+    const { 
+        quote, 
+        author } = await getQOD();
+
+    const message = `Good Morning, ${customer}, the current temperature is ${temp} degrees Fahrenheit. As of ${new Date().toLocaleTimeString()}, the current weather condition suggests ${weather.description}. Here is your Quote of the Day: "${quote}" -${author}`;
     return message;
 }
 
@@ -59,14 +67,25 @@ const scheduleObj = {
     dayOfWeek: [0, 1, 2, 3, 4, 5, 6]
 };
 
-schedule.scheduleJob(scheduleObj, function () {
-    const message = genMessage();
-    message.then(data => sendSMS(data));
+
+schedule.scheduleJob(scheduleObj, async function() {
+    const message  = await genMessage();
+    sendSMS(message);
 });
 
+
+app.get('/', function(req, res) {
+    res.send('Hello, from Jarvis');
+});
+
+app.get('/*', function(req, res) {
+    res.redirect('/');
+});
 
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Jarvis is listening on port ${port}`)
 });
+
+
