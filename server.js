@@ -32,9 +32,7 @@ schedule.scheduleJob(scheduleObj, async function() {
 });
 
 
-app.get('/', function(req, res) {
-    res.send('Hello, from Jarvis');
-});
+app.get('/', require('./routes/index'));
 
 app.get('/*', function(req, res) {
     res.redirect('/');
