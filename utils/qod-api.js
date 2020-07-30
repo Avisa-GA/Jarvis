@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-async function getQuoteOfTheDay() {
+module.exports = async function () {
     try {
         let quote; 
         await axios.get('https://quotes.rest/qod', {
@@ -9,6 +9,8 @@ async function getQuoteOfTheDay() {
             const [ quoteText ] = data.contents.quotes;
             quote = quoteText;
         });
+        quote.author = quote.author ? quote.author : "Unknown";
+        quote.quote = quote.quote ? quote.quote : "Don't treat people how you want to be treated, treat them how THEY want to be treated";
         return quote;
     } catch (error) {
         return {
@@ -18,4 +20,4 @@ async function getQuoteOfTheDay() {
     }
 }
 
-module.exports = getQuoteOfTheDay;
+
