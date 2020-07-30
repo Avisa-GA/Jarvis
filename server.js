@@ -15,6 +15,7 @@ const getWeatherData = require('./utils/weather-api');
 app.set('view engine', 'ejs');
 
 app.use(express.json());
+app.use(express.static('public'));
 
 
 
