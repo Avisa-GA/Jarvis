@@ -6,4 +6,9 @@ router.get('/', function(req, res) {
     });
 });
 
+router.get('/github/curiosity-updates', function(req, res) {
+    console.log(req.body)
+    res.json({status: 'ok'})
+});
+
 module.exports = router;
