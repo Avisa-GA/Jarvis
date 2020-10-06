@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/github/curiosity-updates', function(req, res) {
-    console.log(req.body)
+    console.log(req)
     res.json({status: 'ok'})
 });
 
